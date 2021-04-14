@@ -1,0 +1,6 @@
+.idea
+areas.psb
+areas*.png
+!areas.png
+areas/*
+!areas/0.png

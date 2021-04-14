@@ -1,0 +1,41 @@
+<button>Merge</button>
+
+<script>
+  function toBlob(canvas) {
+    return new Promise(resolve => canvas.toBlob(resolve))
+  }
+
+  async function merge() {
+    const directoryHandle = await showDirectoryPicker()
+    const entries = await directoryHandle.entries()
+    let files = []
+    for await (const [key, value] of entries) {
+      files.push(value)
+    }
+    files.sort(function (a, b) {
+      return parseInt(a.name, 10) - parseInt(b.name, 10)
+    })
+
+    files = files.slice(300)
+
+    const canvas = document.createElement('canvas')
+    canvas.width = files.length * 256
+    canvas.height = 256
+    const context = canvas.getContext('2d')
+
+    for (let index = 0; index < files.length; index++) {
+      const file = await files[index].getFile()
+      const imageBitmap = await createImageBitmap(file)
+      context.drawImage(imageBitmap, index * 256, 0)
+    }
+
+    const blob = await toBlob(canvas)
+    const fileHandle = await showSaveFilePicker()
+    const writable = await fileHandle.createWritable({create: true})
+    await writable.write(blob)
+    await writable.close()
+  }
+
+  const button = document.querySelector('button')
+  button.addEventListener('click', merge)
+</script>
