@@ -1,4 +1,4 @@
-import { createTemplate } from "@sanjo/web-components";
+import { createTemplate } from "./node_modules/@sanjo/web-components/index.js";
 
 const template = createTemplate(`
   <template>
