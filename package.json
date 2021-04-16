@@ -1,6 +1,0 @@
-{
-  "private": true,
-  "dependencies": {
-    "@sanjo/web-components": "^1.0.1"
-  }
-}
